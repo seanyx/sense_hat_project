@@ -7,8 +7,8 @@ filename = "vibration.csv"
 header = ['acc_x', 'acc_y', 'acc_z', 'time']
 
 sense = SenseHat()
-timestamp = datetime.now()
-delay = 0.05
+# timestamp = datetime.now()
+# delay = 0.05
 
 def get_acc_data():
     data = []
@@ -19,16 +19,11 @@ def get_acc_data():
     data.append(datetime.now())
     return(data)
 
-print(get_acc_data())
+# print(get_acc_data())
 
 with open(filename, 'w', newline = '') as f:
     data_writer = writer(f)
     data_writer.writerow(header)
 
-    for i in range(1, 6000):
-        data = get_acc_data()
-        dt = data[-1] - timestamp
-        if dt.seconds > delay:
-            print(data)
-            data_writer.writerow(data)
-            timestamp = datetime.now()
+    while True:
+        data_writer.writerow(get_acc_data())
