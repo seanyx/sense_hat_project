@@ -23,7 +23,7 @@ with open(filename, 'w', newline = '') as f:
     data_writer = writer(f)
     data_writer.writerow(header)
 
-    while i in range(0, 100):
+    for i in range(0, 100):
         data = get_acc_data()
         print(data)
         data_writer.writerow(data)
