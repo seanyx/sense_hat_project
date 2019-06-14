@@ -1,0 +1,58 @@
+---
+title: "Untitled"
+author: "Xiao Yang"
+date: "6/13/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+require(tidyverse)
+```
+
+```{r}
+dat = read_csv(file = "vibration.csv")
+
+dat %>% 
+  mutate(sec = as.numeric(time - min(time))) %>% 
+  gather(key = "direction", value = "acc", -c(time, sec)) %>% 
+  group_by(direction) %>% 
+  # mutate(acc = acc - mean(acc)) %>%
+  ungroup() %>% 
+  ggplot() +
+  geom_line(aes(x = sec, y = acc)) +
+  facet_wrap(~direction, ncol = 1, scales = "free_y") +
+  xlim(920, 940)
+
+
+dat2 = read_csv(file = "control.csv")
+
+fig2 = dat2 %>% 
+  mutate(sec = as.numeric(time - min(time))) %>% 
+  gather(key = "direction", value = "acc", -c(time, sec)) %>% 
+  # filter(sec >= 875) %>% 
+  group_by(direction) %>% 
+  # mutate(acc = acc - mean(acc)) %>% 
+  ungroup() %>% 
+  ggplot() +
+  geom_line(aes(x = sec, y = acc)) +
+  facet_wrap(~direction, ncol = 1, scales = "free_y") +
+  xlim(0, 10) + 
+  labs(
+    x = "Second",
+    y = "Acceleration (unit: g)"
+  )
+
+fig2
+
+figs %>% 
+  ggsave(
+    filename = "figs/south_road_construction.png",
+    width = 6,
+    height = 6,
+    dpi = "print"
+  )
+  
+```
+
